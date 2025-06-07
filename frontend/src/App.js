@@ -12,6 +12,7 @@ function App() {
   const [learningRecs, setLearningRecs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [notification, setNotification] = useState('');
 
   const handleFileUpload = async (file) => {
     setIsLoading(true);
