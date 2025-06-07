@@ -307,7 +307,7 @@ def generate_learning_platform_urls(skill):
 # Routes
 @api_router.get("/")
 async def root():
-    return {"message": "Smart Job Recommendation Platform API"}
+    return {"message": "AI Powered Job Resume & Job Matcher System API"}
 
 @api_router.post("/upload-resume")
 async def upload_resume(file: UploadFile = File(...)):
