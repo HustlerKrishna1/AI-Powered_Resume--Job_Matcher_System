@@ -85,10 +85,22 @@ class SmartJobRecommendationAPITest(unittest.TestCase):
         self.assertIn("matched_skills", job)
         self.assertIn("missing_skills", job)
         
+        # Check for job search URLs
+        self.assertIn("job_search_urls", job)
+        self.assertIsInstance(job["job_search_urls"], dict)
+        self.assertGreater(len(job["job_search_urls"]), 0)
+        
+        # Check for specific job platforms
+        expected_platforms = ["LinkedIn", "Indeed", "Google Jobs"]
+        for platform in expected_platforms:
+            self.assertIn(platform, job["job_search_urls"])
+            self.assertTrue(job["job_search_urls"][platform].startswith("http"))
+            
         print(f"✅ Job matching test passed. Found {len(data['matches'])} matches")
         print(f"   Top match: {job['title']} at {job['company']} with {job['fit_score']}% fit")
         print(f"   Matched skills: {job['matched_skills']}")
         print(f"   Missing skills: {job['missing_skills']}")
+        print(f"   Job search platforms: {list(job['job_search_urls'].keys())}")
         
     def test_04_learning_recommendations(self):
         """Test learning recommendations functionality"""
