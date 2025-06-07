@@ -1,4 +1,4 @@
-🧠 **AI Powered Resume & Job Matcher System**
+# 🧠 **AI Powered Resume & Job Matcher System** 
 
 AI Powered Resume & Job Matcher System is a smart, full-stack application that analyzes resumes, matches candidates to suitable job profiles using AI algorithms, and recommends personalized learning paths to bridge skill gaps. Built with FastAPI, MongoDB, React, and Tailwind CSS.
 
