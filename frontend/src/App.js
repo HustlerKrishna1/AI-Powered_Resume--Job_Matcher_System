@@ -230,65 +230,90 @@ function App() {
       </div>
     );
 
-    const JobMatchesView = () => (
-      <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-white mb-8">AI Job Recommendations</h2>
+    const JobMatchesView = () => {
+      
+      const handleApplyNow = (job) => {
+        // Open multiple job search platforms in new tabs
+        const platforms = job.job_search_urls;
+        const platformNames = ['LinkedIn', 'Indeed', 'Google Jobs'];
         
-        {jobMatches.map((job, index) => (
-          <div key={job.id} className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-cyan-400/50 transition-all duration-300">
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex-1">
-                <div className="flex items-center gap-4 mb-2">
-                  <h3 className="text-2xl font-bold text-white">{job.title}</h3>
-                  <div className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full">
-                    <span className="font-bold">{job.fit_score}% Match</span>
+        platformNames.forEach((platform, index) => {
+          if (platforms[platform]) {
+            setTimeout(() => {
+              window.open(platforms[platform], '_blank');
+            }, index * 500); // Stagger the opening by 500ms to avoid browser blocking
+          }
+        });
+      };
+
+      return (
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-white mb-8">AI Job Recommendations</h2>
+          
+          {jobMatches.map((job, index) => (
+            <div key={job.id} className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-cyan-400/50 transition-all duration-300">
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex-1">
+                  <div className="flex items-center gap-4 mb-2">
+                    <h3 className="text-2xl font-bold text-white">{job.title}</h3>
+                    <div className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full">
+                      <span className="font-bold">{job.fit_score}% Match</span>
+                    </div>
                   </div>
-                </div>
-                <p className="text-cyan-400 text-lg font-semibold mb-2">{job.company}</p>
-                <p className="text-gray-300 mb-4">{job.location} • {job.salary_range}</p>
-                <p className="text-gray-300 mb-6">{job.description}</p>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h4 className="text-lg font-semibold text-green-400 mb-3">Your Matching Skills</h4>
-                <div className="flex flex-wrap gap-2">
-                  {job.matched_skills.map((skill, skillIndex) => (
-                    <span
-                      key={skillIndex}
-                      className="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm border border-green-500/30"
-                    >
-                      ✓ {skill}
-                    </span>
-                  ))}
+                  <p className="text-cyan-400 text-lg font-semibold mb-2">{job.company}</p>
+                  <p className="text-gray-300 mb-4">{job.location} • {job.salary_range}</p>
+                  <p className="text-gray-300 mb-6">{job.description}</p>
                 </div>
               </div>
               
-              <div>
-                <h4 className="text-lg font-semibold text-orange-400 mb-3">Skills to Learn</h4>
-                <div className="flex flex-wrap gap-2">
-                  {job.missing_skills.map((skill, skillIndex) => (
-                    <span
-                      key={skillIndex}
-                      className="px-3 py-1 bg-orange-500/20 text-orange-300 rounded-full text-sm border border-orange-500/30"
-                    >
-                      {skill}
-                    </span>
-                  ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-lg font-semibold text-green-400 mb-3">Your Matching Skills</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {job.matched_skills.map((skill, skillIndex) => (
+                      <span
+                        key={skillIndex}
+                        className="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm border border-green-500/30"
+                      >
+                        ✓ {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="text-lg font-semibold text-orange-400 mb-3">Skills to Learn</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {job.missing_skills.map((skill, skillIndex) => (
+                      <span
+                        key={skillIndex}
+                        className="px-3 py-1 bg-orange-500/20 text-orange-300 rounded-full text-sm border border-orange-500/30"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-6 pt-6 border-t border-white/20 flex gap-4">
+                <button 
+                  onClick={() => handleApplyNow(job)}
+                  className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 font-semibold"
+                >
+                  🚀 Apply Now (Opens LinkedIn, Indeed, Google)
+                </button>
+                <div className="flex-1">
+                  <p className="text-xs text-gray-400 mt-2">
+                    Will search on multiple job platforms for: "{job.title} at {job.company}"
+                  </p>
                 </div>
               </div>
             </div>
-            
-            <div className="mt-6 pt-6 border-t border-white/20">
-              <button className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 font-semibold">
-                Apply Now
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+          ))}
+        </div>
+      );
+    };
 
     const LearningPathView = () => (
       <div className="space-y-6">
