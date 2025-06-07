@@ -390,6 +390,9 @@ async def match_jobs(profile_id: str):
             
             final_score = min(fit_score * exp_factor, 100.0)
             
+            # Generate job search URLs
+            job_search_urls = generate_job_search_urls(job_data["title"], job_data["company"], job_data["location"])
+            
             job_match = JobMatch(
                 id=job_data["id"],
                 title=job_data["title"],
@@ -401,7 +404,8 @@ async def match_jobs(profile_id: str):
                 salary_range=job_data["salary_range"],
                 fit_score=round(final_score, 1),
                 matched_skills=matched_skills,
-                missing_skills=missing_skills
+                missing_skills=missing_skills,
+                job_search_urls=job_search_urls
             )
             
             job_matches.append(job_match)
