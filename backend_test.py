@@ -123,10 +123,22 @@ class SmartJobRecommendationAPITest(unittest.TestCase):
             self.assertIn("google_search_url", rec)
             self.assertIn("priority", rec)
             
+            # Check for learning platform URLs
+            self.assertIn("learning_platform_urls", rec)
+            self.assertIsInstance(rec["learning_platform_urls"], dict)
+            self.assertGreater(len(rec["learning_platform_urls"]), 0)
+            
+            # Check for specific learning platforms
+            expected_platforms = ["Udemy", "Coursera", "YouTube", "FreeCodeCamp"]
+            for platform in expected_platforms:
+                self.assertIn(platform, rec["learning_platform_urls"])
+                self.assertTrue(rec["learning_platform_urls"][platform].startswith("http"))
+            
             print(f"✅ Learning recommendations test passed. Found {len(data['recommendations'])} recommendations")
             for rec in data["recommendations"][:3]:  # Show first 3 recommendations
                 print(f"   Skill: {rec['skill']} (Priority: {rec['priority']})")
                 print(f"   Search URL: {rec['google_search_url']}")
+                print(f"   Learning platforms: {list(rec['learning_platform_urls'].keys())}")
         else:
             print("⚠️ No learning recommendations found, but API returned successfully")
             
