@@ -315,48 +315,102 @@ function App() {
       );
     };
 
-    const LearningPathView = () => (
-      <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-white mb-8">Personalized Learning Path</h2>
+    const LearningPathView = () => {
+      
+      const handleFindCourses = (recommendation) => {
+        // Open multiple learning platforms in new tabs
+        const platforms = recommendation.learning_platform_urls;
+        const platformNames = ['Udemy', 'Coursera', 'YouTube', 'FreeCodeCamp'];
         
-        <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
-          <h3 className="text-2xl font-bold text-cyan-400 mb-6">Recommended Skills to Master</h3>
-          <p className="text-gray-300 mb-8">
-            Based on top job matches, here are the skills that will boost your career prospects:
-          </p>
+        platformNames.forEach((platform, index) => {
+          if (platforms[platform]) {
+            setTimeout(() => {
+              window.open(platforms[platform], '_blank');
+            }, index * 600); // Stagger the opening by 600ms
+          }
+        });
+      };
+
+      const handleQuickSearch = (recommendation, platform) => {
+        if (recommendation.learning_platform_urls[platform]) {
+          window.open(recommendation.learning_platform_urls[platform], '_blank');
+        }
+      };
+
+      return (
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-white mb-8">Personalized Learning Path</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {learningRecs.map((rec, index) => (
-              <div key={index} className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl p-6 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-xl font-bold text-white">{rec.skill}</h4>
-                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                    rec.priority === 'high' 
-                      ? 'bg-red-500/20 text-red-300 border border-red-500/30' 
-                      : 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
-                  }`}>
-                    {rec.priority} priority
-                  </span>
+          <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
+            <h3 className="text-2xl font-bold text-cyan-400 mb-6">Recommended Skills to Master</h3>
+            <p className="text-gray-300 mb-8">
+              Based on top job matches, here are the skills that will boost your career prospects:
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {learningRecs.map((rec, index) => (
+                <div key={index} className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl p-6 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-xl font-bold text-white">{rec.skill}</h4>
+                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                      rec.priority === 'high' 
+                        ? 'bg-red-500/20 text-red-300 border border-red-500/30' 
+                        : 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
+                    }`}>
+                      {rec.priority} priority
+                    </span>
+                  </div>
+                  
+                  <p className="text-gray-300 text-sm mb-6">
+                    Master this skill to increase your job match scores and unlock better opportunities.
+                  </p>
+                  
+                  {/* Quick Platform Buttons */}
+                  <div className="grid grid-cols-2 gap-2 mb-4">
+                    <button
+                      onClick={() => handleQuickSearch(rec, 'YouTube')}
+                      className="px-3 py-2 bg-red-600/20 text-red-300 rounded-lg hover:bg-red-600/30 transition-all duration-300 text-sm border border-red-600/30"
+                    >
+                      📺 YouTube
+                    </button>
+                    <button
+                      onClick={() => handleQuickSearch(rec, 'Udemy')}
+                      className="px-3 py-2 bg-purple-600/20 text-purple-300 rounded-lg hover:bg-purple-600/30 transition-all duration-300 text-sm border border-purple-600/30"
+                    >
+                      🎓 Udemy
+                    </button>
+                    <button
+                      onClick={() => handleQuickSearch(rec, 'FreeCodeCamp')}
+                      className="px-3 py-2 bg-green-600/20 text-green-300 rounded-lg hover:bg-green-600/30 transition-all duration-300 text-sm border border-green-600/30"
+                    >
+                      🆓 FreeCodeCamp
+                    </button>
+                    <button
+                      onClick={() => handleQuickSearch(rec, 'Coursera')}
+                      className="px-3 py-2 bg-blue-600/20 text-blue-300 rounded-lg hover:bg-blue-600/30 transition-all duration-300 text-sm border border-blue-600/30"
+                    >
+                      📚 Coursera
+                    </button>
+                  </div>
+                  
+                  {/* Main Find Courses Button */}
+                  <button
+                    onClick={() => handleFindCourses(rec)}
+                    className="block w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 font-semibold text-center"
+                  >
+                    🚀 Find All Courses
+                  </button>
+                  
+                  <p className="text-xs text-gray-400 mt-2 text-center">
+                    Opens Udemy, Coursera, YouTube, FreeCodeCamp
+                  </p>
                 </div>
-                
-                <p className="text-gray-300 text-sm mb-6">
-                  Master this skill to increase your job match scores and unlock better opportunities.
-                </p>
-                
-                <a
-                  href={rec.google_search_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 font-semibold text-center"
-                >
-                  🔍 Find Courses
-                </a>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    };
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-8">
