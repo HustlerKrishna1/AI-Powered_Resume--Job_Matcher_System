@@ -12,11 +12,7 @@ import uuid
 from datetime import datetime
 import re
 import io
-try:
-    import PyPDF2
-except ImportError:
-    # Try alternative import for newer versions
-    from PyPDF2 import PdfReader as PyPDF2Reader
+import PyPDF2
 import docx
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
