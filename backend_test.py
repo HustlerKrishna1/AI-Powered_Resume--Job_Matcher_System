@@ -147,4 +147,5 @@ class SmartJobRecommendationAPITest(unittest.TestCase):
 
 if __name__ == "__main__":
     tester = SmartJobRecommendationAPITest()
+    tester.setUp()  # Explicitly call setUp to initialize base_url
     tester.run_all_tests()
