@@ -325,6 +325,9 @@ function App() {
     const LearningPathView = () => {
       
       const handleFindCourses = (recommendation) => {
+        // Show notification
+        setNotification(`📚 Opening courses for "${recommendation.skill}" on multiple platforms...`);
+        
         // Open multiple learning platforms in new tabs
         const platforms = recommendation.learning_platform_urls;
         const platformNames = ['Udemy', 'Coursera', 'YouTube', 'FreeCodeCamp'];
@@ -336,6 +339,9 @@ function App() {
             }, index * 600); // Stagger the opening by 600ms
           }
         });
+        
+        // Clear notification after a delay
+        setTimeout(() => setNotification(''), 4000);
       };
 
       const handleQuickSearch = (recommendation, platform) => {
