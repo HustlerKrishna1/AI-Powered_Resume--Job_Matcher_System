@@ -65,6 +65,7 @@ class JobMatch(BaseModel):
     fit_score: float
     matched_skills: List[str]
     missing_skills: List[str]
+    job_search_urls: Dict[str, str]
 
 class LearningRecommendation(BaseModel):
     skill: str
