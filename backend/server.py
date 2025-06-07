@@ -70,6 +70,7 @@ class JobMatch(BaseModel):
 class LearningRecommendation(BaseModel):
     skill: str
     google_search_url: str
+    learning_platform_urls: Dict[str, str]
     priority: str  # "high", "medium", "low"
 
 # Sample job database
