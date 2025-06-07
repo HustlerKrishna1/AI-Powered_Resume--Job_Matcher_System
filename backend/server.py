@@ -239,7 +239,7 @@ def calculate_job_match_score(candidate_skills, job_skills):
     return round(match_ratio * 100, 1)
 
 def generate_learning_recommendations(missing_skills):
-    """Generate Google search URLs for learning missing skills"""
+    """Generate learning recommendations with platform URLs for missing skills"""
     recommendations = []
     
     # Priority mapping
@@ -247,19 +247,57 @@ def generate_learning_recommendations(missing_skills):
     
     for skill in missing_skills[:8]:  # Limit to top 8 missing skills
         priority = "high" if skill.lower() in high_priority_skills else "medium"
-        
-        # Create targeted search query
-        search_query = f"learn {skill} online course tutorial"
-        encoded_query = urllib.parse.quote(search_query)
-        search_url = f"https://www.google.com/search?q={encoded_query}"
+        platform_urls = generate_learning_platform_urls(skill)
         
         recommendations.append(LearningRecommendation(
             skill=skill,
-            google_search_url=search_url,
+            google_search_url=platform_urls["YouTube"],  # Use YouTube as default search
+            learning_platform_urls=platform_urls,
             priority=priority
         ))
     
     return recommendations
+
+def generate_job_search_urls(job_title, company, location):
+    """Generate search URLs for various job platforms"""
+    # Clean and format search terms
+    job_query = f"{job_title} {company}".strip()
+    encoded_job_query = urllib.parse.quote(job_query)
+    encoded_title = urllib.parse.quote(job_title)
+    encoded_company = urllib.parse.quote(company)
+    encoded_location = urllib.parse.quote(location)
+    
+    search_urls = {
+        "LinkedIn": f"https://www.linkedin.com/jobs/search/?keywords={encoded_job_query}&location={encoded_location}",
+        "Indeed": f"https://www.indeed.com/jobs?q={encoded_job_query}&l={encoded_location}",
+        "Glassdoor": f"https://www.glassdoor.com/Jobs/jobs.htm?suggestCount=0&suggestChosen=false&clickSource=searchBtn&typedKeyword={encoded_job_query}&sc.keyword={encoded_job_query}&locT=&locId=&jobType=",
+        "AngelList": f"https://angel.co/jobs?keywords={encoded_title}",
+        "ZipRecruiter": f"https://www.ziprecruiter.com/jobs-search?search={encoded_job_query}&location={encoded_location}",
+        "Monster": f"https://www.monster.com/jobs/search/?q={encoded_job_query}&where={encoded_location}",
+        "Google Jobs": f"https://www.google.com/search?q={encoded_job_query}+{encoded_location}+jobs&ibp=htl;jobs"
+    }
+    
+    return search_urls
+
+def generate_learning_platform_urls(skill):
+    """Generate search URLs for various learning platforms"""
+    encoded_skill = urllib.parse.quote(skill)
+    skill_course_query = urllib.parse.quote(f"{skill} course tutorial")
+    
+    platform_urls = {
+        "Udemy": f"https://www.udemy.com/courses/search/?q={encoded_skill}",
+        "Coursera": f"https://www.coursera.org/search?query={encoded_skill}",
+        "edX": f"https://www.edx.org/search?q={encoded_skill}",
+        "Pluralsight": f"https://www.pluralsight.com/search?q={encoded_skill}",
+        "LinkedIn Learning": f"https://www.linkedin.com/learning/search?keywords={encoded_skill}",
+        "YouTube": f"https://www.youtube.com/results?search_query={skill_course_query}",
+        "FreeCodeCamp": f"https://www.freecodecamp.org/news/search/?query={encoded_skill}",
+        "Codecademy": f"https://www.codecademy.com/search?query={encoded_skill}",
+        "Khan Academy": f"https://www.khanacademy.org/search?referer=%2F&page_search_query={encoded_skill}",
+        "Skillshare": f"https://www.skillshare.com/search?query={encoded_skill}"
+    }
+    
+    return platform_urls
 
 # Routes
 @api_router.get("/")
