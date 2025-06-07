@@ -234,6 +234,9 @@ function App() {
     const JobMatchesView = () => {
       
       const handleApplyNow = (job) => {
+        // Show notification
+        setNotification(`🚀 Opening job searches for "${job.title}" at ${job.company}...`);
+        
         // Open multiple job search platforms in new tabs
         const platforms = job.job_search_urls;
         const platformNames = ['LinkedIn', 'Indeed', 'Google Jobs'];
@@ -245,6 +248,9 @@ function App() {
             }, index * 500); // Stagger the opening by 500ms to avoid browser blocking
           }
         });
+        
+        // Clear notification after a delay
+        setTimeout(() => setNotification(''), 3000);
       };
 
       return (
