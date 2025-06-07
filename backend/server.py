@@ -143,10 +143,7 @@ SAMPLE_JOBS = [
 def extract_text_from_pdf(file_content):
     """Extract text from PDF file"""
     try:
-        try:
-            pdf_reader = PyPDF2.PdfReader(io.BytesIO(file_content))
-        except NameError:
-            pdf_reader = PyPDF2Reader(io.BytesIO(file_content))
+        pdf_reader = PyPDF2.PdfReader(io.BytesIO(file_content))
         
         text = ""
         for page in pdf_reader.pages:
