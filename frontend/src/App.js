@@ -463,6 +463,13 @@ function App() {
 
   return (
     <div className="App">
+      {/* Global Notification */}
+      {notification && (
+        <div className="fixed top-4 right-4 z-50 bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-6 py-3 rounded-xl shadow-lg animate-pulse">
+          {notification}
+        </div>
+      )}
+      
       {currentView === 'upload' ? <FileUploadZone /> : <Dashboard />}
     </div>
   );
