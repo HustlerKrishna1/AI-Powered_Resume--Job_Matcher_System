@@ -249,9 +249,14 @@ def generate_learning_recommendations(missing_skills):
         priority = "high" if skill.lower() in high_priority_skills else "medium"
         platform_urls = generate_learning_platform_urls(skill)
         
+        # Create targeted search query for Google
+        search_query = f"learn {skill} online course tutorial"
+        encoded_query = urllib.parse.quote(search_query)
+        google_search_url = f"https://www.google.com/search?q={encoded_query}"
+        
         recommendations.append(LearningRecommendation(
             skill=skill,
-            google_search_url=platform_urls["YouTube"],  # Use YouTube as default search
+            google_search_url=google_search_url,
             learning_platform_urls=platform_urls,
             priority=priority
         ))
