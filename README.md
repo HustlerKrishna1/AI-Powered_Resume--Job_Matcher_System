@@ -5,8 +5,8 @@ AI Powered Resume & Job Matcher System is a smart, full-stack application that a
 🔗 Live Demo — Upload a resume with skills like Python, JavaScript, or React to see your match scores and learning recommendations.
  Link : https://jobmatch-ai-1.preview.emergentagent.com/
 
-My agent will sleep sometimes if there is no work for long time 
-email:hustlerkrishna18@gmail.com 
+Note : My agent will sleep sometimes if there is no work for long time 
+email: hustlerkrishna18@gmail.com 
 Ping me to wake up my agent
 
 ✅ Core Features
